@@ -9,10 +9,10 @@
 // View Globals
 int first_person = 1;
 int th = 0;         
-int ph = 10;        
+int ph = 90;        
 int fov = 55;       
 double asp = 1;     
-double dim = 3.0;   
+double dim = 20.0;   
 
 // Lighting Globals
 int emission  =   0;
@@ -215,8 +215,10 @@ void special(int key, int x, int y) {
 void key(unsigned char ch, int x, int y) {
   if (ch == 27)
     exit(0);
-  else if (ch == '0')
-    th = ph = 0;
+  else if (ch == '0') {
+    th = 0;
+    ph = 90;
+  }
   Project(first_person ? fov : 0,asp,dim);
   glutIdleFunc(idle);
   glutPostRedisplay();
