@@ -26,7 +26,8 @@ float ylight  =   0;
 
 // Game Globals
 int snakepos[100][2];
-int speed = 500
+int speed = 500;
+int size = 20;
 
 void Vertex(double th, double ph) {
   double x = Sin(th) * Cos(ph);
@@ -55,6 +56,81 @@ void sphere(double x, double y, double z, double r) {
   }
 
   glPopMatrix();
+}
+
+void cube(double x, double y, double z, 
+          double dx, double dy, double dz,
+          double theta) {
+
+  // Set specular color to white
+  float white[] = {1,1,1,1};
+  float black[] = {0,0,0,1};
+  glMaterialfv(GL_FRONT_AND_BACK,GL_SHININESS,shinyvec);
+  glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,white);
+  glMaterialfv(GL_FRONT_AND_BACK,GL_EMISSION,black);
+
+
+  glPushMatrix();
+  
+  // Translations
+  glTranslated(x, y, z);
+  glRotated(th, 0, 1, 0);
+  glScaled(dx, dy, dz);
+
+  glColor3ub(255,255,255);
+
+  glBegin(GL_QUADS);
+    //Front
+  glNormal3f( 0, 0, 1);
+  glVertex3f(-1,-1, 1);
+  glVertex3f(+1,-1, 1);
+  glVertex3f(+1,+1, 1);
+  glVertex3f(-1,+1, 1);
+  //  Back
+  glNormal3f( 0, 0,-1);
+  glVertex3f(+1,-1,-1);
+  glVertex3f(-1,-1,-1);
+  glVertex3f(-1,+1,-1);
+  glVertex3f(+1,+1,-1);
+  //  Right
+  glNormal3f(+1, 0, 0);
+  glVertex3f(+1,-1,+1);
+  glVertex3f(+1,-1,-1);
+  glVertex3f(+1,+1,-1);
+  glVertex3f(+1,+1,+1);
+  //  Left
+  glNormal3f(-1, 0, 0);
+  glVertex3f(-1,-1,-1);
+  glVertex3f(-1,-1,+1);
+  glVertex3f(-1,+1,+1);
+  glVertex3f(-1,+1,-1);
+  //  Top
+  glNormal3f( 0,+1, 0);
+  glVertex3f(-1,+1,+1);
+  glVertex3f(+1,+1,+1);
+  glVertex3f(+1,+1,-1);
+  glVertex3f(-1,+1,-1);
+  glEnd();
+
+  glPopMatrix();
+
+}
+
+
+void gameBoard() {
+
+  // Set specular color to white
+  float white[] = {1,1,1,1};
+  float black[] = {0,0,0,1};
+  glMaterialfv(GL_FRONT_AND_BACK,GL_SHININESS,shinyvec);
+  glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,white);
+  glMaterialfv(GL_FRONT_AND_BACK,GL_EMISSION,black);
+
+  cube(size, 0.0, 0.0,  1.0, 1.0, size,  0);
+}
+
+void drawGame() {
+  gameBoard();
 }
 
 void display() {
@@ -89,6 +165,8 @@ void display() {
   glLightfv(GL_LIGHT0,GL_DIFFUSE ,Diffuse);
   glLightfv(GL_LIGHT0,GL_SPECULAR,Specular);
   glLightfv(GL_LIGHT0,GL_POSITION,Position);
+
+  drawGame();
 
   ErrCheck("display");
   glFlush();
