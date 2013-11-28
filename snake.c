@@ -1,23 +1,34 @@
 #include "CSCIx229.h"
 
-int first_person=1;       //  Projection mode
-int th=0;         //  Azimuth of view angle
-int ph=10;         //  Elevation of view angle
-int fov=55;       //  Field of view (for perspective)
-double asp=1;     //  Aspect ratio
-double dim=3.0;   //  Size of world
+// Direction definitions
+#define Up = 0
+#define Right = 1
+#define Down = 2
+#define Left = 3
 
-// Light values
-int emission  =   0;  // Emission intensity (%)
-int ambient   =  30;  // Ambient intensity (%)
-int diffuse   = 100;  // Diffuse intensity (%)
-int specular  =   0;  // Specular intensity (%)
-int shininess =   0;  // Shininess (power of two)
-float shinyvec[1];    // Shininess (value)
-int zh        =  90;  // Light azimuth
-float ylight  =   0;  // Elevation of light
+// View Globals
+int first_person = 1;
+int th = 0;         
+int ph = 10;        
+int fov = 55;       
+double asp = 1;     
+double dim = 3.0;   
 
-static void Vertex(double th, double ph) {
+// Lighting Globals
+int emission  =   0;
+int ambient   =  30;
+int diffuse   = 100;
+int specular  =   0;
+int shininess =   0;
+float shinyvec[1];  
+int zh        =  90;
+float ylight  =   0;
+
+// Game Globals
+int snakepos[100][2];
+int speed = 500
+
+void Vertex(double th, double ph) {
   double x = Sin(th) * Cos(ph);
   double y = Cos(th) * Cos(ph);
   double z =           Sin(ph);
@@ -25,7 +36,7 @@ static void Vertex(double th, double ph) {
   glVertex3d(x, y, z);
 }
 
-static void sphere(double x, double y, double z, double r) {
+void sphere(double x, double y, double z, double r) {
   const int d = 5;
   int th, ph;
 
