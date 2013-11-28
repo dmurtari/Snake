@@ -60,7 +60,7 @@ void sphere(double x, double y, double z, double r) {
 
 void cube(double x, double y, double z, 
           double dx, double dy, double dz,
-          double theta) {
+          double th) {
 
   // Set specular color to white
   float white[] = {1,1,1,1};
@@ -126,7 +126,23 @@ void gameBoard() {
   glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,white);
   glMaterialfv(GL_FRONT_AND_BACK,GL_EMISSION,black);
 
-  cube(size, 0.0, 0.0,  1.0, 1.0, size,  0);
+  glPushMatrix();
+  
+  glBegin(GL_QUADS);
+  glNormal3f(0.0, 1.0, 0.0);
+  glVertex3f(-100, 0.0, 100);
+  glVertex3f(-100, 0.0, -100);
+  glVertex3f(100, 0.0, -100);
+  glVertex3f(100, 0.0, 100);
+  glEnd();
+
+  cube(size, 0.0, 0.0,  0.5, 1.0, size,  0);
+  cube(-size, 0.0, 0.0,  0.5, 1.0, size,  0);
+  cube(0.0, 0.0, size,  size, 1.0, 0.5, 0);
+  cube(0.0, 0.0, -size,  size, 1.0, 0.5, 0);
+
+  glPopMatrix();
+
 }
 
 void drawGame() {
