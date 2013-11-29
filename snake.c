@@ -7,6 +7,9 @@
 #define Left 3
 #define NA -3000
 
+// Size of gameboard
+#define Size 20
+
 // View Globals
 int first_person = 1;
 int th = 0;         
@@ -26,9 +29,8 @@ int zh        =  90;
 float ylight  =   0;
 
 // Game Globals
-int snakepos[100][2];
+int snakepos[Size * Size][2];
 int speed = 500;
-int size = 20;
 int currentdir = Left;
 int currentlen = 0;
 int foodx = NA;
@@ -137,10 +139,10 @@ void gameBoard() {
   glVertex3f(100, 0.0, 100);
   glEnd();
 
-  cube(size, 0.0, 0.0,  0.5, 1.0, size,  0);
-  cube(-size, 0.0, 0.0,  0.5, 1.0, size,  0);
-  cube(0.0, 0.0, size,  size, 1.0, 0.5, 0);
-  cube(0.0, 0.0, -size,  size, 1.0, 0.5, 0);
+  cube(Size, 0.0, 0.0,  0.5, 1.0, Size,  0);
+  cube(-Size, 0.0, 0.0,  0.5, 1.0, Size,  0);
+  cube(0.0, 0.0, Size,  Size, 1.0, 0.5, 0);
+  cube(0.0, 0.0, -Size,  Size, 1.0, 0.5, 0);
 
   glPopMatrix();
 
@@ -149,7 +151,7 @@ void gameBoard() {
 void initSnake() {
   int i;
 
-  for(i = 0; i < 100; i++) {
+  for(i = 0; i < Size * Size; i++) {
     snakepos[i][0] = NA;
     snakepos[i][1] = NA;
   }
@@ -237,8 +239,8 @@ void isCrashed() {
       crashed = 1;
   }
 
-  if((snakepos[0][0] == size - 1) || (snakepos[0][1] == size - 1) ||
-     (snakepos[0][0] == -size + 1) || (snakepos[0][1] == -size + 1))
+  if((snakepos[0][0] == Size - 1) || (snakepos[0][1] == Size - 1) ||
+     (snakepos[0][0] == -Size + 1) || (snakepos[0][1] == -Size + 1))
     crashed = 1;
 
   glutIdleFunc(crashed ? NULL : idle);
