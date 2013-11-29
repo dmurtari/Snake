@@ -29,7 +29,8 @@ float ylight  =   0;
 int snakepos[100][2];
 int speed = 500;
 int size = 20;
-int currentdir = Left;
+int currentdir = Up;
+int currentlen = 0;
 
 void Vertex(double th, double ph) {
   double x = Sin(th) * Cos(ph);
@@ -154,6 +155,8 @@ void initSnake() {
   snakepos[0][0] = 0; snakepos[0][1] = 0;
   snakepos[1][0] = 1; snakepos[1][1] = 0;
   snakepos[2][0] = 2; snakepos[2][1] = 0;
+
+  currentlen = 3;
 }
 
 void drawSnake() {
@@ -169,20 +172,20 @@ void drawSnake() {
 void step(int dir) {
   int i;
 
-  for(i = 99; i > 0; i--) {
+  for(i = currentlen - 1; i > 0; i--) {
     snakepos[i][0] = snakepos[i - 1][0];
     snakepos[i][1] = snakepos[i - 1][1];
   }
 
   switch(dir) {
     case Up:
-      snakepos[0][1] += 1;
+      snakepos[0][1] -= 1;
       break;
     case Right:
       snakepos[0][0] += 1;
       break;
     case Down:
-      snakepos[0][1] -= 1;
+      snakepos[0][1] += 1;
       break;
     case Left:
       snakepos[0][0] -= 1;
