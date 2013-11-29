@@ -33,6 +33,7 @@ int currentdir = Up;
 int currentlen = 0;
 int foodx = NA;
 int foody = NA;
+int crashed = 0;
 
 void Vertex(double th, double ph) {
   double x = Sin(th) * Cos(ph);
@@ -187,6 +188,8 @@ void drawSnake() {
   }
 }
 
+
+
 void step(int dir) {
   int i;
 
@@ -221,10 +224,29 @@ void step(int dir) {
   }
 }
 
+void idle() {
+  double t = glutGet(GLUT_ELAPSED_TIME)/1000.0;
+  zh = fmod(90 * t,360.0);
+  step(currentdir);
+  glutPostRedisplay();
+}
+
+void isCrashed() {
+  int i;
+
+  for(i = 1; i < currentlen; i++) {
+    if(snakepos[0][0] == snakepos[i][0] && snakepos[0][1] == snakepos[i][1])
+      crashed = 1;
+  }
+
+  glutIdleFunc(crashed ? NULL : idle);
+}
+
 void drawGame() {
   gameBoard();
   drawSnake();
   drawFood();
+  isCrashed();
 }
 
 void display() {
@@ -267,12 +289,7 @@ void display() {
   glutSwapBuffers();
 }
 
-void idle() {
-  double t = glutGet(GLUT_ELAPSED_TIME)/1000.0;
-  zh = fmod(90 * t,360.0);
-  step(currentdir);
-  glutPostRedisplay();
-}
+
 
 void special(int key, int x, int y) {
   if (key == GLUT_KEY_RIGHT)
