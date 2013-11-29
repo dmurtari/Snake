@@ -332,8 +332,8 @@ int main(int argc, char* argv[]) {
   glutInit(&argc,argv);
   initSnake();
   glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
-  glutInitWindowSize(400,400);
-  glutCreateWindow("Lighting");
+  glutInitWindowSize(600,600);
+  glutCreateWindow("Snake");
   glutDisplayFunc(display);
   glutReshapeFunc(reshape);
   glutSpecialFunc(special);
