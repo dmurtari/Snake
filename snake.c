@@ -239,7 +239,6 @@ void display() {
 }
 
 void idle() {
-  double elapsed = glutGet(GLUT_ELAPSED_TIME);
   double t = glutGet(GLUT_ELAPSED_TIME)/1000.0;
   zh = fmod(90 * t,360.0);
   step(currentdir);
