@@ -157,8 +157,19 @@ void initSnake() {
   snakepos[2][0] = 2; snakepos[2][1] = 0;
 }
 
+void drawSnake() {
+  int i;
+
+  sphere(snakepos[0][0], 1, snakepos[0][1], .4);
+
+  for(i = 0; i < 100; i++) {
+    sphere(snakepos[i][0], 1, snakepos[i][1], .4);
+  }
+}
+
 void drawGame() {
   gameBoard();
+  drawSnake();
 }
 
 void display() {
