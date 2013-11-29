@@ -248,13 +248,13 @@ void idle() {
 
 void special(int key, int x, int y) {
   if (key == GLUT_KEY_RIGHT)
-    th -= 5;
+    currentdir = Right;
   else if (key == GLUT_KEY_LEFT)
-    th += 5;
+    currentdir = Left;
   else if (key == GLUT_KEY_UP)
-    ph += 5;
+    currentdir = Up;
   else if (key == GLUT_KEY_DOWN)
-    ph -= 5;
+    currentdir = Down;
 
   th %= 360;
   ph %= 360;
