@@ -37,6 +37,10 @@ int foodx = NA;
 int foody = NA;
 int crashed = 0;
 
+/*
+ * Given position of vertex in polar coordinates, calculate and draw a vertex
+ * with normal
+ */
 void Vertex(double th, double ph) {
   double x = Sin(th) * Cos(ph);
   double y = Cos(th) * Cos(ph);
@@ -45,6 +49,9 @@ void Vertex(double th, double ph) {
   glVertex3d(x, y, z);
 }
 
+/*
+ * Draw a sphere at position (x, y, z) and radius r
+ */
 void sphere(double x, double y, double z, double r) {
   const int d = 5;
   int th, ph;
@@ -65,6 +72,10 @@ void sphere(double x, double y, double z, double r) {
   glPopMatrix();
 }
 
+/*
+ * Draw a cube at position (x, y, z), transformed by (dx, dy, dz), and rotated
+ * around the z-axis th degrees
+ */
 void cube(double x, double y, double z, 
           double dx, double dy, double dz,
           double th) {
@@ -122,6 +133,9 @@ void cube(double x, double y, double z,
   glPopMatrix();
 }
 
+/*
+ * Draw the snake game board
+ */
 void gameBoard() {
   float white[] = {1,1,1,1};
   float black[] = {0,0,0,1};
@@ -139,15 +153,20 @@ void gameBoard() {
   glVertex3f(100, 0.0, 100);
   glEnd();
 
-  cube(Size, 0.0, 0.0,  0.5, 1.0, Size,  0);
-  cube(-Size, 0.0, 0.0,  0.5, 1.0, Size,  0);
-  cube(0.0, 0.0, Size,  Size, 1.0, 0.5, 0);
-  cube(0.0, 0.0, -Size,  Size, 1.0, 0.5, 0);
+  cube(Size, 0.0, 0.0,  1.0, 1.0, Size,  0);
+  cube(-Size, 0.0, 0.0,  1.0, 1.0, Size,  0);
+  cube(0.0, 0.0, Size,  Size, 1.0, 1.0, 0);
+  cube(0.0, 0.0, -Size,  Size, 1.0, 1.0, 0);
 
   glPopMatrix();
 
 }
 
+/*
+ * Initialize the position array of the snake as all positions where current
+ * position is NA. Then, make a snake 3 segments long, and put the food where
+ * the snake's tail is. 
+ */
 void initSnake() {
   int i;
 
@@ -166,48 +185,75 @@ void initSnake() {
   foody = snakepos[currentlen - 1][1];
 }
 
+/*
+ * Draw the head of the snake (should contain more ability for the play to 
+ * customize the head, based on what settings are chosen in a menu)
+ */
 void drawHead() {
   glColor3ub(0, 0, 200);
   sphere(snakepos[0][0], 1, snakepos[0][1], .4);
 }
 
+/*
+ * Draw a body segment. Same as head, should contain more ability to customize
+ */
 void drawBody(int i) {
   glColor3ub(0, 200, 0);
   sphere(snakepos[i][0], 1, snakepos[i][1], .4);
 }
 
+/*
+ * Draw a piece of food based on current food position. Should draw something
+ * a little more interesting.
+ */
 void drawFood() {
   glColor3ub(200, 0, 0);
   sphere(foodx, 1, foody, .3);
 }
 
+/*
+ * Draw the snake given current position array
+ */
 void drawSnake() {
   int i;
 
   drawHead();
   for(i = 0; i < 100; i++) {
-    drawBody(i);
+    // Need to control speed of game before if statement can be used
+    // if(snakepos[i][0] != NA)
+      drawBody(i);
   }
 }
 
+/*
+ * Each step while the program is idling, modify the snake's position array
+ * based on the direction that the snake is going, and whether the snake ate
+ * a piece of food
+ */
 void step(int dir) {
   int i;
 
   if(snakepos[0][0] == foodx && snakepos[0][1] == foody) {
+    // Snake has 'eaten' if the head is on a piece of food, so the snake grows
     for(i = currentlen; i > 0; i--) {
       snakepos[i][0] = snakepos[i - 1][0];
       snakepos[i][1] = snakepos[i - 1][1];
     }       
     currentlen++;
+
+    // Define new position of food to be where last body segment of snake is
     foodx = snakepos[currentlen - 1][0];
     foody = snakepos[currentlen - 1][1];
   } else {
+    // Snake hasn't eaten, so each body segment just moves forward without growing
     for(i = currentlen - 1; i > 0; i--) {
       snakepos[i][0] = snakepos[i - 1][0];
       snakepos[i][1] = snakepos[i - 1][1];
     }
   }
 
+  // Based on the current direction, decide where the head of the snake should
+  // go
   switch(dir) {
     case Up:
       snakepos[0][1] -= 1;
@@ -224,6 +270,11 @@ void step(int dir) {
   }
 }
 
+/*
+ * Moves the light during idle, and also calls the step function to move the 
+ * snake. Needs some way to better control the speed of the snake (ie only call
+ * the step function if certain conditions are met)
+ */
 void idle() {
   double t = glutGet(GLUT_ELAPSED_TIME)/1000.0;
   zh = fmod(90 * t,360.0);
@@ -231,21 +282,30 @@ void idle() {
   glutPostRedisplay();
 }
 
+/*
+ * Decides whether or not the snake has crashed
+ */
 void isCrashed() {
   int i;
 
   for(i = 1; i < currentlen; i++) {
+    // If the head is at the same position as any body segment, then crashed
     if(snakepos[0][0] == snakepos[i][0] && snakepos[0][1] == snakepos[i][1])
       crashed = 1;
   }
 
+  // If the head is in a wall, then crashed
   if((snakepos[0][0] == Size - 1) || (snakepos[0][1] == Size - 1) ||
      (snakepos[0][0] == -Size + 1) || (snakepos[0][1] == -Size + 1))
     crashed = 1;
 
+  // Stop animation if the snake crashed, otherwise keep going. 
   glutIdleFunc(crashed ? NULL : idle);
 }
 
+/*
+ * Draw the game
+  */
 void drawGame() {
   gameBoard();
   isCrashed();
@@ -292,8 +352,6 @@ void display() {
   glFlush();
   glutSwapBuffers();
 }
-
-
 
 void special(int key, int x, int y) {
   if (key == GLUT_KEY_RIGHT)
