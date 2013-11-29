@@ -31,6 +31,8 @@ int speed = 500;
 int size = 20;
 int currentdir = Up;
 int currentlen = 0;
+int foodx = NA;
+int foody = NA;
 
 void Vertex(double th, double ph) {
   double x = Sin(th) * Cos(ph);
@@ -159,13 +161,21 @@ void initSnake() {
   currentlen = 3;
 }
 
+void drawHead() {
+  sphere(snakepos[0][0], 1, snakepos[0][1], .4);
+}
+
+void drawBody(int i) {
+  sphere(snakepos[i][0], 1, snakepos[i][1], .4);
+}
+
 void drawSnake() {
   int i;
 
-  sphere(snakepos[0][0], 1, snakepos[0][1], .4);
+  drawHead();
 
   for(i = 0; i < 100; i++) {
-    sphere(snakepos[i][0], 1, snakepos[i][1], .4);
+    drawBody(i);
   }
 }
 
