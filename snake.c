@@ -1,10 +1,11 @@
 #include "CSCIx229.h"
 
 // Direction definitions
-#define Up = 0
-#define Right = 1
-#define Down = 2
-#define Left = 3
+#define Up 0
+#define Right 1
+#define Down 2
+#define Left 3
+#define NA -3000
 
 // View Globals
 int first_person = 1;
@@ -118,8 +119,6 @@ void cube(double x, double y, double z,
 
 
 void gameBoard() {
-
-  // Set specular color to white
   float white[] = {1,1,1,1};
   float black[] = {0,0,0,1};
   glMaterialfv(GL_FRONT_AND_BACK,GL_SHININESS,shinyvec);
@@ -143,6 +142,19 @@ void gameBoard() {
 
   glPopMatrix();
 
+}
+
+void initSnake() {
+  int i;
+
+  for(i = 0; i < 100; i++) {
+    snakepos[i][0] = NA;
+    snakepos[i][1] = NA;
+  }
+
+  snakepos[0][0] = 0; snakepos[0][1] = 0;
+  snakepos[1][0] = 1; snakepos[1][1] = 0;
+  snakepos[2][0] = 2; snakepos[2][1] = 0;
 }
 
 void drawGame() {
@@ -232,6 +244,7 @@ void reshape(int width, int height) {
 
 int main(int argc, char* argv[]) {
   glutInit(&argc,argv);
+  initSnake();
   glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
   glutInitWindowSize(400,400);
   glutCreateWindow("Lighting");
