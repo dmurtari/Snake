@@ -159,8 +159,8 @@ void initSnake() {
 
   currentlen = 3;
 
-  foodx = currentlen;
-  foody = 0;
+  foodx = snakepos[currentlen - 1][0];
+  foody = snakepos[currentlen - 1][1];
 }
 
 void drawHead() {
@@ -196,6 +196,8 @@ void step(int dir) {
       snakepos[i][1] = snakepos[i - 1][1];
     }       
     currentlen++;
+    foodx = snakepos[currentlen - 1][0];
+    foody = snakepos[currentlen - 1][1];
   } else {
     for(i = currentlen - 1; i > 0; i--) {
       snakepos[i][0] = snakepos[i - 1][0];
