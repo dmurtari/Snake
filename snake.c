@@ -50,7 +50,6 @@ void sphere(double x, double y, double z, double r) {
   glTranslated(x, y, z);
   glScaled(r, r, r);
 
-  glColor3ub(0, 100, 0);
   for (ph = -90; ph < 90; ph += d) {
     glBegin(GL_QUAD_STRIP);
     for (th = 0; th <= 360; th += d) {
@@ -162,10 +161,12 @@ void initSnake() {
 }
 
 void drawHead() {
+  glColor3ub(0, 0, 200);
   sphere(snakepos[0][0], 1, snakepos[0][1], .4);
 }
 
 void drawBody(int i) {
+  glColor3ub(0, 200, 0);
   sphere(snakepos[i][0], 1, snakepos[i][1], .4);
 }
 
