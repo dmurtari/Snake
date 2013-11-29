@@ -114,9 +114,7 @@ void cube(double x, double y, double z,
   glEnd();
 
   glPopMatrix();
-
 }
-
 
 void gameBoard() {
   float white[] = {1,1,1,1};
@@ -164,6 +162,30 @@ void drawSnake() {
 
   for(i = 0; i < 100; i++) {
     sphere(snakepos[i][0], 1, snakepos[i][1], .4);
+  }
+}
+
+void step(int dir) {
+  int i;
+
+  for(i = 99; i > 0; i--) {
+    snakepos[i][0] = snakepos[i - 1][0];
+    snakepos[i][1] = snakepos[i - 1][1];
+  }
+
+  switch(dir) {
+    case Up:
+      snakepos[0][1] += 1;
+      break;
+    case Right:
+      snakepos[0][0] += 1;
+      break;
+    case Down:
+      snakepos[0][1] -= 1;
+      break;
+    case Left:
+      snakepos[0][0] -= 1;
+      break;
   }
 }
 
