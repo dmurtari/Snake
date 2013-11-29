@@ -29,7 +29,7 @@ float ylight  =   0;
 int snakepos[100][2];
 int speed = 500;
 int size = 20;
-int currentdir = Up;
+int currentdir = Left;
 int currentlen = 0;
 int foodx = NA;
 int foody = NA;
@@ -188,8 +188,6 @@ void drawSnake() {
   }
 }
 
-
-
 void step(int dir) {
   int i;
 
@@ -239,14 +237,18 @@ void isCrashed() {
       crashed = 1;
   }
 
+  if((snakepos[0][0] == size - 1) || (snakepos[0][1] == size - 1) ||
+     (snakepos[0][0] == -size + 1) || (snakepos[0][1] == -size + 1))
+    crashed = 1;
+
   glutIdleFunc(crashed ? NULL : idle);
 }
 
 void drawGame() {
   gameBoard();
+  isCrashed();
   drawSnake();
   drawFood();
-  isCrashed();
 }
 
 void display() {
