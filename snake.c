@@ -29,6 +29,7 @@ float ylight  =   0;
 int snakepos[100][2];
 int speed = 500;
 int size = 20;
+int currentdir = Left;
 
 void Vertex(double th, double ph) {
   double x = Sin(th) * Cos(ph);
@@ -235,8 +236,10 @@ void display() {
 }
 
 void idle() {
+  double elapsed = glutGet(GLUT_ELAPSED_TIME);
   double t = glutGet(GLUT_ELAPSED_TIME)/1000.0;
   zh = fmod(90 * t,360.0);
+  step(currentdir);
   glutPostRedisplay();
 }
 
