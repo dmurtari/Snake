@@ -158,6 +158,9 @@ void initSnake() {
   snakepos[2][0] = 2; snakepos[2][1] = 0;
 
   currentlen = 3;
+
+  foodx = currentlen;
+  foody = 0;
 }
 
 void drawHead() {
@@ -170,11 +173,15 @@ void drawBody(int i) {
   sphere(snakepos[i][0], 1, snakepos[i][1], .4);
 }
 
+void drawFood() {
+  glColor3ub(200, 0, 0);
+  sphere(foodx, 1, foody, .3);
+}
+
 void drawSnake() {
   int i;
 
   drawHead();
-
   for(i = 0; i < 100; i++) {
     drawBody(i);
   }
@@ -183,9 +190,17 @@ void drawSnake() {
 void step(int dir) {
   int i;
 
-  for(i = currentlen - 1; i > 0; i--) {
-    snakepos[i][0] = snakepos[i - 1][0];
-    snakepos[i][1] = snakepos[i - 1][1];
+  if(snakepos[0][0] == foodx && snakepos[0][1] == foody) {
+    for(i = currentlen; i > 0; i--) {
+      snakepos[i][0] = snakepos[i - 1][0];
+      snakepos[i][1] = snakepos[i - 1][1];
+    }       
+    currentlen++;
+  } else {
+    for(i = currentlen - 1; i > 0; i--) {
+      snakepos[i][0] = snakepos[i - 1][0];
+      snakepos[i][1] = snakepos[i - 1][1];
+    }
   }
 
   switch(dir) {
@@ -207,6 +222,7 @@ void step(int dir) {
 void drawGame() {
   gameBoard();
   drawSnake();
+  drawFood();
 }
 
 void display() {
