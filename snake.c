@@ -48,6 +48,7 @@ int foody = NA;
 int crashed = 0;
 int clock = 0;
 int score = 0;
+int highscore = 0;
 
 /*
  * Given position of vertex in polar coordinates, calculate and draw a vertex
@@ -281,6 +282,9 @@ void step(int dir) {
       snakepos[0][0] -= 1;
       break;
   }
+
+  if (score > highscore)
+    highscore = score;
 }
 
 /*
@@ -320,6 +324,17 @@ void isCrashed() {
   glutIdleFunc(crashed ? NULL : idle);
 }
 
+void printMessage() {
+  glWindowPos2i(5, 5);
+  Print("Score: %d, High Score: %d", score, highscore);
+
+  if (crashed){
+    glWindowPos2i(200, 400);
+    Print("CRASHED! Hit 'r' to restart");
+    glWindowPos2i(220, 300);
+    Print("Your score was: %d", score);
+  }
+}
 /*
  * Draw the game
   */
@@ -328,6 +343,7 @@ void drawGame() {
   isCrashed();
   drawSnake();
   drawFood();
+  printMessage();
 }
 
 void display() {
@@ -389,9 +405,7 @@ void display() {
 
   drawGame();
   
-  glWindowPos2i(5,5);
-  Print("Score: %d", score);
-  ErrCheck("display");
+
   glFlush();
   glutSwapBuffers();
 }
@@ -433,6 +447,7 @@ void key(unsigned char ch, int x, int y) {
   } else if (ch == 'r') {
     initSnake();
     crashed = 0;
+    score = 0;
     currentdir = Left;
     glutIdleFunc(idle);
   } else if (ch == 'f') {
