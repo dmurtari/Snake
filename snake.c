@@ -21,7 +21,7 @@
 #define Size 20
 
 // View Globals
-int first_person = 1;
+int first_person = 0;
 int th = 0;         
 int ph = 90;        
 int fov = 55;       
@@ -333,13 +333,39 @@ void display() {
 
   glLoadIdentity();
   if (first_person) {
-    double Ex = -2 * dim * Sin(th) * Cos(ph);
-    double Ey = +2 * dim           *Sin(ph);
-    double Ez = +2 * dim * Cos(th) * Cos(ph);
-    gluLookAt(Ex,Ey,Ez , 0,0,0 , 0,Cos(ph),0);
+    double Ax, Ay, Az;
+    double Ex = snakepos[0][0];
+    double Ey = 0;
+    double Ez = snakepos[0][1];
+
+    switch (currentdir) {
+      case Up:
+        Ax = snakepos[0][0];
+        Ay = 0;
+        Az = snakepos[0][1] - 1;
+        break;
+      case Right:
+        Ax = snakepos[0][0] + 1;
+        Ay = 0;
+        Az = snakepos[0][1];
+        break;
+      case Down:
+        Ax = snakepos[0][0];
+        Ay = 0;
+        Az = snakepos[0][1] + 1;
+        break;
+      case Left:
+        Ax = snakepos[0][0] - 1;
+        Ay = 0;
+        Az = snakepos[0][1];
+        break;
+    }
+    gluLookAt(Ex, Ey, Ez, Ax, Ay, Az, 0, 1, 0);
   } else {
-    glRotatef(ph,1,0,0);
-    glRotatef(th,0,1,0);
+    double Ex = -2*dim*Sin(th)*Cos(ph);
+    double Ey = +2*dim        *Sin(ph);
+    double Ez = +2*dim*Cos(th)*Cos(ph);
+    gluLookAt(Ex,Ey,Ez , 0,0,0 , 0,Cos(ph),0);
   }
 
   glShadeModel(GL_SMOOTH);
@@ -380,7 +406,7 @@ void special(int key, int x, int y) {
   th %= 360;
   ph %= 360;
    
-  Project(first_person ? fov : 0, asp, dim);
+  Project(fov, asp, dim);
   glutPostRedisplay();
 }
 
@@ -396,7 +422,7 @@ void key(unsigned char ch, int x, int y) {
     glutIdleFunc(idle);
   }
 
-  Project(first_person ? fov : 0,asp,dim);
+  Project(fov ,asp, dim);
   glutIdleFunc(idle);
   glutPostRedisplay();
 }
@@ -404,7 +430,7 @@ void key(unsigned char ch, int x, int y) {
 void reshape(int width, int height) {
   asp = (height>0) ? (double)width/height : 1;
   glViewport(0,0, width,height);
-  Project(first_person ? fov : 0,asp,dim);
+  Project(fov,asp,dim);
 }
 
 int main(int argc, char* argv[]) {
