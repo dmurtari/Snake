@@ -324,6 +324,10 @@ void isCrashed() {
   glutIdleFunc(crashed ? NULL : idle);
 }
 
+/*
+ * Controls text printed to the screen. Currently shows score, highscore, and
+ * message on crash. 
+ */
 void printMessage() {
   glWindowPos2i(5, 5);
   Print("Score: %d, High Score: %d", score, highscore);
