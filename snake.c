@@ -202,7 +202,7 @@ void initSnake() {
  */
 void drawHead() {
   glColor3ub(0, 0, 200);
-  sphere(snakepos[0][0], 1, snakepos[0][1], .4);
+  sphere(snakepos[0][0], 0, snakepos[0][1], .4);
 }
 
 /*
@@ -210,7 +210,7 @@ void drawHead() {
  */
 void drawBody(int i) {
   glColor3ub(0, 200, 0);
-  sphere(snakepos[i][0], 1, snakepos[i][1], .4);
+  sphere(snakepos[i][0], 0, snakepos[i][1], .4);
 }
 
 /*
@@ -219,7 +219,7 @@ void drawBody(int i) {
  */
 void drawFood() {
   glColor3ub(200, 0, 0);
-  sphere(foodx, 1, foody, .3);
+  sphere(foodx, 0, foody, .3);
 }
 
 /*
