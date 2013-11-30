@@ -30,12 +30,13 @@ float ylight  =   0;
 
 // Game Globals
 int snakepos[Size * Size][2];
-int speed = 500;
+int speed = 100;
 int currentdir = Left;
 int currentlen = 0;
 int foodx = NA;
 int foody = NA;
 int crashed = 0;
+int clock = 0;
 
 /*
  * Given position of vertex in polar coordinates, calculate and draw a vertex
@@ -220,7 +221,7 @@ void drawSnake() {
   drawHead();
   for(i = 0; i < 100; i++) {
     // Need to control speed of game before if statement can be used
-    // if(snakepos[i][0] != NA)
+    if(snakepos[i][0] != NA)
       drawBody(i);
   }
 }
@@ -276,9 +277,13 @@ void step(int dir) {
  * the step function if certain conditions are met)
  */
 void idle() {
+  int elapsed = glutGet(GLUT_ELAPSED_TIME)/speed;
   double t = glutGet(GLUT_ELAPSED_TIME)/1000.0;
   zh = fmod(90 * t,360.0);
-  step(currentdir);
+  if(elapsed > clock) {
+    step(currentdir);
+    clock = elapsed;
+  }
   glutPostRedisplay();
 }
 
