@@ -41,7 +41,7 @@ float ylight  =   0;
 // Game Globals
 int snakepos[Size * Size][2];
 int speed = 100;
-int currentdir = Up;
+int currentdir = Left;
 int currentlen = 0;
 int foodx = NA;
 int foody = NA;
@@ -392,14 +392,25 @@ void display() {
 }
 
 void special(int key, int x, int y) {
-  if (key == GLUT_KEY_RIGHT)
-    currentdir = Right;
-  else if (key == GLUT_KEY_LEFT)
-    currentdir = Left;
-  else if (key == GLUT_KEY_UP)
-    currentdir = Up;
-  else if (key == GLUT_KEY_DOWN)
-    currentdir = Down;
+  if (key == GLUT_KEY_RIGHT) {
+    if (first_person) {
+      currentdir = (currentdir + 1) % 4;
+    } else {
+      currentdir = Right;
+    }
+  } else if (key == GLUT_KEY_LEFT) {
+    if (first_person) {
+      currentdir = (currentdir - 1) % 4;
+    } else {
+      currentdir = Left;
+    }
+  } else if (key == GLUT_KEY_UP){
+    if (!first_person)
+      currentdir = Up;
+  } else if (key == GLUT_KEY_DOWN){
+    if (!first_person)
+      currentdir = Down;
+  }
 
   th %= 360;
   ph %= 360;
@@ -417,6 +428,7 @@ void key(unsigned char ch, int x, int y) {
   } else if (ch == 'r') {
     initSnake();
     crashed = 0;
+    currentdir = Left;
     glutIdleFunc(idle);
   } else if (ch == 'f') {
     first_person = 1 - first_person;
