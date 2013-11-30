@@ -21,7 +21,7 @@
 #define Size 20
 
 // View Globals
-int first_person = 0;
+int first_person = 1;
 int th = 0;         
 int ph = 90;        
 int fov = 55;       
@@ -41,7 +41,7 @@ float ylight  =   0;
 // Game Globals
 int snakepos[Size * Size][2];
 int speed = 100;
-int currentdir = Left;
+int currentdir = Up;
 int currentlen = 0;
 int foodx = NA;
 int foody = NA;
@@ -158,10 +158,10 @@ void gameBoard() {
   
   glBegin(GL_QUADS);
   glNormal3f(0.0, 1.0, 0.0);
-  glVertex3f(-100, 0.0, 100);
-  glVertex3f(-100, 0.0, -100);
-  glVertex3f(100, 0.0, -100);
-  glVertex3f(100, 0.0, 100);
+  glVertex3f(-100, -1.0, 100);
+  glVertex3f(-100, -1.0, -100);
+  glVertex3f(100, -1.0, -100);
+  glVertex3f(100, -1.0, 100);
   glEnd();
 
   cube(Size, 0.0, 0.0,  1.0, 1.0, Size,  0);
@@ -333,30 +333,28 @@ void display() {
 
   glLoadIdentity();
   if (first_person) {
-    double Ax, Ay, Az;
     double Ex = snakepos[0][0];
     double Ey = 0;
     double Ez = snakepos[0][1];
+    double Ax = 0;
+    double Ay = 0;
+    double Az = 0;
 
     switch (currentdir) {
       case Up:
         Ax = snakepos[0][0];
-        Ay = 0;
         Az = snakepos[0][1] - 1;
         break;
       case Right:
         Ax = snakepos[0][0] + 1;
-        Ay = 0;
         Az = snakepos[0][1];
         break;
       case Down:
         Ax = snakepos[0][0];
-        Ay = 0;
         Az = snakepos[0][1] + 1;
         break;
       case Left:
         Ax = snakepos[0][0] - 1;
-        Ay = 0;
         Az = snakepos[0][1];
         break;
     }
@@ -420,6 +418,8 @@ void key(unsigned char ch, int x, int y) {
     initSnake();
     crashed = 0;
     glutIdleFunc(idle);
+  } else if (ch == 'f') {
+    first_person = 1 - first_person;
   }
 
   Project(fov ,asp, dim);
