@@ -1,3 +1,13 @@
+/*
+ * CSCI 4229 Final Project: Game of Snake 
+ * Domenic Murtari (domenic.murtari@gmail.com)
+ * Undergraduate
+ *
+ * Currently, functional, if basic, game of snake. All elements and function
+ * calls are in place to allow for more complex graphics to be implemented by
+ * the due date of the project.
+ */
+
 #include "CSCIx229.h"
 
 // Direction definitions
@@ -220,7 +230,6 @@ void drawSnake() {
 
   drawHead();
   for(i = 0; i < 100; i++) {
-    // Need to control speed of game before if statement can be used
     if(snakepos[i][0] != NA)
       drawBody(i);
   }
@@ -381,6 +390,10 @@ void key(unsigned char ch, int x, int y) {
   else if (ch == '0') {
     th = 0;
     ph = 90;
+  } else if (ch == 'r') {
+    crashed = 0;
+    initSnake();
+    glutIdleFunc(idle);
   }
   Project(first_person ? fov : 0,asp,dim);
   glutIdleFunc(idle);
