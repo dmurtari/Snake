@@ -21,7 +21,7 @@
 #define Size 20
 
 // View Globals
-int first_person = 1;
+int first_person = 0;
 int th = 0;         
 int ph = 90;        
 int fov = 55;       
