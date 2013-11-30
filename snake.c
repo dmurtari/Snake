@@ -47,6 +47,7 @@ int foodx = NA;
 int foody = NA;
 int crashed = 0;
 int clock = 0;
+int score = 0;
 
 /*
  * Given position of vertex in polar coordinates, calculate and draw a vertex
@@ -254,12 +255,14 @@ void step(int dir) {
     // Define new position of food to be where last body segment of snake is
     foodx = snakepos[currentlen - 1][0];
     foody = snakepos[currentlen - 1][1];
+    score += 100;
   } else {
     // Snake hasn't eaten, so each body segment just moves forward without growing
     for(i = currentlen - 1; i > 0; i--) {
       snakepos[i][0] = snakepos[i - 1][0];
       snakepos[i][1] = snakepos[i - 1][1];
     }
+    score += 10;
   }
 
   // Based on the current direction, decide where the head of the snake should
@@ -385,7 +388,9 @@ void display() {
   glLightfv(GL_LIGHT0,GL_POSITION,Position);
 
   drawGame();
-
+  
+  glWindowPos2i(5,5);
+  Print("Score: %d", score);
   ErrCheck("display");
   glFlush();
   glutSwapBuffers();
