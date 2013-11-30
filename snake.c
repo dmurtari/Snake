@@ -391,10 +391,11 @@ void key(unsigned char ch, int x, int y) {
     th = 0;
     ph = 90;
   } else if (ch == 'r') {
-    crashed = 0;
     initSnake();
+    crashed = 0;
     glutIdleFunc(idle);
   }
+
   Project(first_person ? fov : 0,asp,dim);
   glutIdleFunc(idle);
   glutPostRedisplay();
