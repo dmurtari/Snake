@@ -429,20 +429,20 @@ void special(int key, int x, int y) {
   if (key == GLUT_KEY_RIGHT) {
     if (first_person) {
       currentdir = (currentdir + 1) % 4;
-    } else {
+    } else if (currentdir != Left) {
       currentdir = Right;
     }
   } else if (key == GLUT_KEY_LEFT) {
     if (first_person) {
       currentdir = (currentdir - 1) % 4;
-    } else {
+    } else if (currentdir != Right) {
       currentdir = Left;
     }
   } else if (key == GLUT_KEY_UP){
-    if (!first_person)
+    if (!first_person && currentdir != Down)
       currentdir = Up;
   } else if (key == GLUT_KEY_DOWN){
-    if (!first_person)
+    if (!first_person && currentdir != Up)
       currentdir = Down;
   }
 
