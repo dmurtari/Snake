@@ -269,7 +269,7 @@ void step(int dir) {
     putFood();
     score += 500;
   } else {
-    // Snake hasn't eaten, so each body segment just moves forward without growing
+    // Snake hasn't eaten so each body segment moves forward without growing
     for(i = currentlen - 1; i > 0; i--) {
       snakepos[i][0] = snakepos[i - 1][0];
       snakepos[i][1] = snakepos[i - 1][1];
@@ -341,7 +341,7 @@ void isCrashed() {
  */
 void printMessage() {
   glWindowPos2i(5, 5);
-  Print("Score: %d, High Score: %d, Food at: %d, %d", score, highscore, foodx, foody);
+  Print("Score: %d, High Score: %d", score, highscore);
 
   if (crashed){
     glWindowPos2i(200, 400);
