@@ -237,6 +237,15 @@ void drawSnake() {
   }
 }
 
+void putFood() {
+  foodx = glutGet(GLUT_ELAPSED_TIME) % Size - 1;
+  foody = ((Size - glutGet(GLUT_ELAPSED_TIME) % Size - 1) + 2) % (Size - 2);
+
+  if (glutGet(GLUT_ELAPSED_TIME) % 2 == 0)
+    foodx = -foodx;
+  if (glutGet(GLUT_ELAPSED_TIME) % 2 != 0)
+    foody = -foody;
+}
 /*
  * Each step while the program is idling, modify the snake's position array
  * based on the direction that the snake is going, and whether the snake ate
@@ -254,9 +263,8 @@ void step(int dir) {
     currentlen++;
 
     // Define new position of food to be where last body segment of snake is
-    foodx = snakepos[currentlen - 1][0];
-    foody = snakepos[currentlen - 1][1];
-    score += 100;
+    putFood();
+    score += 500;
   } else {
     // Snake hasn't eaten, so each body segment just moves forward without growing
     for(i = currentlen - 1; i > 0; i--) {
@@ -330,7 +338,7 @@ void isCrashed() {
  */
 void printMessage() {
   glWindowPos2i(5, 5);
-  Print("Score: %d, High Score: %d", score, highscore);
+  Print("Score: %d, High Score: %d, Food at: %d, %d", score, highscore, foodx, foody);
 
   if (crashed){
     glWindowPos2i(200, 400);
