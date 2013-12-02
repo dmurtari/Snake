@@ -237,6 +237,9 @@ void drawSnake() {
   }
 }
 
+/*
+ * Randomly place food somewhere on the gameboard
+ */
 void putFood() {
   foodx = glutGet(GLUT_ELAPSED_TIME) % Size - 1;
   foody = ((Size - glutGet(GLUT_ELAPSED_TIME) % Size - 1) + 2) % (Size - 2);
