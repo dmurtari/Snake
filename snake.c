@@ -358,6 +358,7 @@ void printMessage() {
     Print("Paused. Hit 'p' to resume");
   }
 }
+
 /*
  * Draw the game
   */
@@ -484,6 +485,10 @@ void key(unsigned char ch, int x, int y) {
   glutPostRedisplay();
 }
 
+/*
+ * Menu callback function. Controls same functionality as keys (but don't need
+ * to memorize keys)
+ */
 void menu(int value) {
   if(value == 1) {
     paused = 1 - paused;
@@ -499,9 +504,9 @@ void menu(int value) {
 }
 
 void reshape(int width, int height) {
-  asp = (height>0) ? (double)width/height : 1;
-  glViewport(0,0, width,height);
-  Project(fov,asp,dim);
+  asp = (height > 0) ? (double)width/height : 1;
+  glViewport(0, 0, width, height);
+  Project(fov, asp, dim);
 }
 
 int main(int argc, char* argv[]) {
