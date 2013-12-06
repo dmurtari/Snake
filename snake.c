@@ -268,6 +268,8 @@ void step(int dir) {
     // Define new position of food to be where last body segment of snake is
     putFood();
     score += 500;
+    if(speed > 20)
+      speed = speed - 2;
   } else {
     // Snake hasn't eaten so each body segment moves forward without growing
     for(i = currentlen - 1; i > 0; i--) {
