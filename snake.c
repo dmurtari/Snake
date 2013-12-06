@@ -46,6 +46,7 @@ int currentlen = 0;
 int foodx = NA;
 int foody = NA;
 int crashed = 0;
+int paused = 0;
 int clock = 0;
 int score = 0;
 int highscore = 0;
@@ -334,7 +335,7 @@ void isCrashed() {
     crashed = 1;
 
   // Stop animation if the snake crashed, otherwise keep going. 
-  glutIdleFunc(crashed ? NULL : idle);
+  glutIdleFunc((crashed || paused) ? NULL : idle);
 }
 
 /*
@@ -345,11 +346,16 @@ void printMessage() {
   glWindowPos2i(5, 5);
   Print("Score: %d, High Score: %d", score, highscore);
 
-  if (crashed){
+  if (crashed) {
     glWindowPos2i(200, 400);
     Print("CRASHED! Hit 'r' to restart");
     glWindowPos2i(220, 300);
     Print("Your score was: %d", score);
+  }
+
+  if (paused) {
+    glWindowPos2i(210, 500);
+    Print("Paused. Hit 'p' to resume");
   }
 }
 /*
@@ -469,11 +475,27 @@ void key(unsigned char ch, int x, int y) {
     glutIdleFunc(idle);
   } else if (ch == 'f') {
     first_person = 1 - first_person;
+  } else if (ch == 'p') {
+    paused = 1 - paused;
   }
 
   Project(fov ,asp, dim);
   glutIdleFunc(idle);
   glutPostRedisplay();
+}
+
+void menu(int value) {
+  if(value == 1) {
+    paused = 1 - paused;
+  } else if (value == 2) {
+    initSnake();
+    crashed = 0;
+    score = 0;
+    currentdir = Left;
+    glutIdleFunc(idle);  
+  } else if (value == 3) {
+    exit(0);
+  }
 }
 
 void reshape(int width, int height) {
@@ -488,6 +510,11 @@ int main(int argc, char* argv[]) {
   glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
   glutInitWindowSize(600,600);
   glutCreateWindow("Snake");
+  glutCreateMenu(menu);
+  glutAddMenuEntry("Pause/Resume", 1);
+  glutAddMenuEntry("Reset", 2);
+  glutAddMenuEntry("Quit", 3);
+  glutAttachMenu(GLUT_LEFT_BUTTON);
   glutDisplayFunc(display);
   glutReshapeFunc(reshape);
   glutSpecialFunc(special);
