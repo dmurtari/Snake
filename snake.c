@@ -418,6 +418,7 @@ void display() {
   glLightfv(GL_LIGHT0,GL_SPECULAR,Specular);
   glLightfv(GL_LIGHT0,GL_POSITION,Position);
 
+
   drawGame();
   
 
@@ -483,7 +484,7 @@ void reshape(int width, int height) {
 int main(int argc, char* argv[]) {
   glutInit(&argc,argv);
   initSnake();
-  glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
+  glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE | GLUT_MULTISAMPLE);
   glutInitWindowSize(600,600);
   glutCreateWindow("Snake");
   glutDisplayFunc(display);
@@ -492,6 +493,8 @@ int main(int argc, char* argv[]) {
   glutKeyboardFunc(key);
   glutIdleFunc(idle);
   ErrCheck("init");
+  glEnable(GL_MULTISAMPLE);
+  glHint(GL_MULTISAMPLE_FILTER_HINT_NV, GL_NICEST);
   glutMainLoop();
   return 0;
 }
