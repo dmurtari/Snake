@@ -96,16 +96,8 @@ void sphere(double x, double y, double z, double r) {
  */
 void cube(double x, double y, double z, 
           double dx, double dy, double dz,
-          double th) {
-
-  /*/ Set specular color to white
-  float white[] = {1,1,1,1};
-  float black[] = {0,0,0,1};
-  glMaterialfv(GL_FRONT_AND_BACK,GL_SHININESS,shinyvec);
-  glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,white);
-  glMaterialfv(GL_FRONT_AND_BACK,GL_EMISSION,black);*/
-
-
+          double th, int texid) {
+  
   glPushMatrix();
   
   // Translations
@@ -113,39 +105,50 @@ void cube(double x, double y, double z,
   glRotated(th, 0, 1, 0);
   glScaled(dx, dy, dz);
 
+  // Enable textures, if desired. Otherwise, make sure textures are disabled. 
+  if (texid != -1) {
+    glEnable(GL_TEXTURE_2D);
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    glBindTexture(GL_TEXTURE_2D, texture[texid]);
+  } else {
+    glDisable(GL_TEXTURE_2D);
+  }
+
   glBegin(GL_QUADS);
-    //Front
-  glNormal3f( 0, 0, 1);
-  glVertex3f(-1,-1, 1);
-  glVertex3f(+1,-1, 1);
-  glVertex3f(+1,+1, 1);
-  glVertex3f(-1,+1, 1);
+  //Front
+  glNormal3f(0, 0, 1);
+  glTexCoord2f(0.0, 0.0); glVertex3f(-1, -1, +1);
+  glTexCoord2f(5.0, 0.0); glVertex3f(+1, -1, +1);
+  glTexCoord2f(5.0, 5.0); glVertex3f(+1, +1, +1);
+  glTexCoord2f(0.0, 5.0); glVertex3f(-1, +1, +1);
   //  Back
-  glNormal3f( 0, 0,-1);
-  glVertex3f(+1,-1,-1);
-  glVertex3f(-1,-1,-1);
-  glVertex3f(-1,+1,-1);
-  glVertex3f(+1,+1,-1);
+  glNormal3f(0, 0,-1);
+  glTexCoord2f(0.0, 0.0); glVertex3f(+1, -1, -1);
+  glTexCoord2f(5.0, 0.0); glVertex3f(-1, -1, -1);
+  glTexCoord2f(5.0, 5.0); glVertex3f(-1, +1, -1);
+  glTexCoord2f(0.0, 5.0); glVertex3f(+1, +1, -1);
   //  Right
   glNormal3f(+1, 0, 0);
-  glVertex3f(+1,-1,+1);
-  glVertex3f(+1,-1,-1);
-  glVertex3f(+1,+1,-1);
-  glVertex3f(+1,+1,+1);
+  glTexCoord2f(0.0, 0.0); glVertex3f(+1, -1, +1);
+  glTexCoord2f(5.0, 0.0); glVertex3f(+1, -1, -1);
+  glTexCoord2f(5.0, 5.0); glVertex3f(+1, +1, -1);
+  glTexCoord2f(0.0, 5.0); glVertex3f(+1, +1, +1);
   //  Left
   glNormal3f(-1, 0, 0);
-  glVertex3f(-1,-1,-1);
-  glVertex3f(-1,-1,+1);
-  glVertex3f(-1,+1,+1);
-  glVertex3f(-1,+1,-1);
+  glTexCoord2f(0.0, 0.0); glVertex3f(-1, -1, -1);
+  glTexCoord2f(5.0, 0.0); glVertex3f(-1, -1, +1);
+  glTexCoord2f(5.0, 5.0); glVertex3f(-1, +1, +1);
+  glTexCoord2f(0.0, 5.0); glVertex3f(-1, +1, -1);
   //  Top
   glNormal3f( 0,+1, 0);
-  glVertex3f(-1,+1,+1);
-  glVertex3f(+1,+1,+1);
-  glVertex3f(+1,+1,-1);
-  glVertex3f(-1,+1,-1);
+  glTexCoord2f(0.0, 0.0); glVertex3f(-1, +1, +1);
+  glTexCoord2f(5.0, 0.0); glVertex3f(+1, +1, +1);
+  glTexCoord2f(5.0, 5.0); glVertex3f(+1, +1, -1);
+  glTexCoord2f(0.0, 5.0); glVertex3f(-1, +1, -1);
   glEnd();
 
+  // Disable texturs, pop transformation matrix
+  glDisable(GL_TEXTURE_2D);
   glPopMatrix();
 }
 
@@ -171,10 +174,10 @@ void gameBoard() {
   glEnd();
 
   glColor3ub(255, 255, 255);
-  cube(Size, 0.0, 0.0,  1.0, 1.0, Size,  0);
-  cube(-Size, 0.0, 0.0,  1.0, 1.0, Size,  0);
-  cube(0.0, 0.0, Size,  Size, 1.0, 1.0, 0);
-  cube(0.0, 0.0, -Size,  Size, 1.0, 1.0, 0);
+  cube(Size, 0.0, 0.0,  1.0, 1.0, Size,  0, 1);
+  cube(-Size, 0.0, 0.0,  1.0, 1.0, Size,  0, 1);
+  cube(0.0, 0.0, Size,  Size, 1.0, 1.0, 0, 1);
+  cube(0.0, 0.0, -Size,  Size, 1.0, 1.0, 0, 1);
 
   glPopMatrix();
 
@@ -212,7 +215,7 @@ void drawHead() {
   if (bodytype == 0)
     sphere(snakepos[0][0], 0, snakepos[0][1], .4);
   else if (bodytype == 1)
-    cube(snakepos[0][0], 0, snakepos[0][1], .5, .5, .5, 0);
+    cube(snakepos[0][0], 0, snakepos[0][1], .5, .5, .5, 0, -1);
 }
 
 /*
@@ -223,7 +226,7 @@ void drawBody(int i) {
   if (bodytype == 0)
     sphere(snakepos[i][0], 0, snakepos[i][1], .4);
   else if (bodytype == 1)
-    cube(snakepos[i][0], 0, snakepos[i][1], .5, .5, .5, 0);
+    cube(snakepos[i][0], 0, snakepos[i][1], .5, .5, .5, 0, -1);
 }
 
 /*
