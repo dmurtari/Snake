@@ -9,6 +9,7 @@ Controls are:
 * `r` to reset the game
 * `f` to toggle first person mode
 * `p` to pause/resume the game
+* `b` to toggle body between cube and sphere
 
 Clicking anywhere on the screen will bring up a menu
 
