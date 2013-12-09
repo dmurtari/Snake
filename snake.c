@@ -52,6 +52,9 @@ int score = 0;
 int highscore = 0;
 int bodytype = 1;
 
+// Textures
+unsigned int texture[10]; 
+
 /*
  * Given position of vertex in polar coordinates, calculate and draw a vertex
  * with normal
@@ -533,6 +536,14 @@ void createMenus() {
   glutAttachMenu(GLUT_LEFT_BUTTON);  
 }
 
+/*
+ * Load textures from files
+ */
+void loadTextures() {
+  texture[0] = LoadTexBMP("ground.bmp");
+  texture[1] = LoadTexBMP("wall.bmp");
+ }
+
 void reshape(int width, int height) {
   asp = (height > 0) ? (double)width/height : 1;
   glViewport(0, 0, width, height);
@@ -546,6 +557,7 @@ int main(int argc, char* argv[]) {
   glutInitWindowSize(600,600);
   glutCreateWindow("Snake");
   createMenus();
+  loadTextures();
   glutDisplayFunc(display);
   glutReshapeFunc(reshape);
   glutSpecialFunc(special);
