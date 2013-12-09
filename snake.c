@@ -163,15 +163,18 @@ void gameBoard() {
   glMaterialfv(GL_FRONT_AND_BACK,GL_EMISSION,black);
 
   glPushMatrix();
-  
+  glEnable(GL_TEXTURE_2D);
+  glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+  glBindTexture(GL_TEXTURE_2D, texture[0]);
   glColor3ub(100, 100, 100);
   glBegin(GL_QUADS);
   glNormal3f(0.0, 1.0, 0.0);
-  glVertex3f(-100, -1.0, 100);
-  glVertex3f(-100, -1.0, -100);
-  glVertex3f(100, -1.0, -100);
-  glVertex3f(100, -1.0, 100);
+  glTexCoord2f(0.0, 0.0); glVertex3f(-100, -1.0, 100);
+  glTexCoord2f(20.0, 0.0); glVertex3f(-100, -1.0, -100);
+  glTexCoord2f(20.0, 20.0); glVertex3f(100, -1.0, -100);
+  glTexCoord2f(0.0, 20.0); glVertex3f(100, -1.0, 100);
   glEnd();
+  glDisable(GL_TEXTURE_2D);
 
   glColor3ub(255, 255, 255);
   cube(Size, 0.0, 0.0,  1.0, 1.0, Size,  0, 1);
