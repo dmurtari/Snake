@@ -509,6 +509,10 @@ void menu(int value) {
     glutIdleFunc(idle);  
   } else if (value == 3) {
     exit(0);
+  } else if (value == 4) {
+    bodytype = 0;
+  } else if (value == 5) {
+    bodytype = 1;
   }
 }
 
@@ -518,17 +522,27 @@ void reshape(int width, int height) {
   Project(fov, asp, dim);
 }
 
+void createMenus() {
+  int bodymenu;
+
+  bodymenu = glutCreateMenu(menu);
+  glutAddMenuEntry("Sphere", 4);
+  glutAddMenuEntry("Cube", 5);
+  glutCreateMenu(menu);
+  glutAddSubMenu("Body Types", bodymenu);
+  glutAddMenuEntry("Pause/Resume", 1);
+  glutAddMenuEntry("Reset", 2);
+  glutAddMenuEntry("Quit", 3);
+  glutAttachMenu(GLUT_LEFT_BUTTON);  
+}
+
 int main(int argc, char* argv[]) {
   glutInit(&argc,argv);
   initSnake();
   glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
   glutInitWindowSize(600,600);
   glutCreateWindow("Snake");
-  glutCreateMenu(menu);
-  glutAddMenuEntry("Pause/Resume", 1);
-  glutAddMenuEntry("Reset", 2);
-  glutAddMenuEntry("Quit", 3);
-  glutAttachMenu(GLUT_LEFT_BUTTON);
+  createMenus();
   glutDisplayFunc(display);
   glutReshapeFunc(reshape);
   glutSpecialFunc(special);
