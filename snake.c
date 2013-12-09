@@ -516,12 +516,9 @@ void menu(int value) {
   }
 }
 
-void reshape(int width, int height) {
-  asp = (height > 0) ? (double)width/height : 1;
-  glViewport(0, 0, width, height);
-  Project(fov, asp, dim);
-}
-
+/*
+ * Create menus using GLUT's menu function
+ */
 void createMenus() {
   int bodymenu;
 
@@ -534,6 +531,12 @@ void createMenus() {
   glutAddMenuEntry("Reset", 2);
   glutAddMenuEntry("Quit", 3);
   glutAttachMenu(GLUT_LEFT_BUTTON);  
+}
+
+void reshape(int width, int height) {
+  asp = (height > 0) ? (double)width/height : 1;
+  glViewport(0, 0, width, height);
+  Project(fov, asp, dim);
 }
 
 int main(int argc, char* argv[]) {
