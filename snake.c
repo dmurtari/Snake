@@ -50,6 +50,7 @@ int paused = 0;
 int clock = 0;
 int score = 0;
 int highscore = 0;
+int bodytype = 1;
 
 /*
  * Given position of vertex in polar coordinates, calculate and draw a vertex
@@ -94,12 +95,12 @@ void cube(double x, double y, double z,
           double dx, double dy, double dz,
           double th) {
 
-  // Set specular color to white
+  /*/ Set specular color to white
   float white[] = {1,1,1,1};
   float black[] = {0,0,0,1};
   glMaterialfv(GL_FRONT_AND_BACK,GL_SHININESS,shinyvec);
   glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,white);
-  glMaterialfv(GL_FRONT_AND_BACK,GL_EMISSION,black);
+  glMaterialfv(GL_FRONT_AND_BACK,GL_EMISSION,black);*/
 
 
   glPushMatrix();
@@ -108,8 +109,6 @@ void cube(double x, double y, double z,
   glTranslated(x, y, z);
   glRotated(th, 0, 1, 0);
   glScaled(dx, dy, dz);
-
-  glColor3ub(255,255,255);
 
   glBegin(GL_QUADS);
     //Front
@@ -159,6 +158,7 @@ void gameBoard() {
 
   glPushMatrix();
   
+  glColor3ub(100, 100, 100);
   glBegin(GL_QUADS);
   glNormal3f(0.0, 1.0, 0.0);
   glVertex3f(-100, -1.0, 100);
@@ -167,6 +167,7 @@ void gameBoard() {
   glVertex3f(100, -1.0, 100);
   glEnd();
 
+  glColor3ub(255, 255, 255);
   cube(Size, 0.0, 0.0,  1.0, 1.0, Size,  0);
   cube(-Size, 0.0, 0.0,  1.0, 1.0, Size,  0);
   cube(0.0, 0.0, Size,  Size, 1.0, 1.0, 0);
@@ -205,7 +206,10 @@ void initSnake() {
  */
 void drawHead() {
   glColor3ub(0, 0, 200);
-  sphere(snakepos[0][0], 0, snakepos[0][1], .4);
+  if (bodytype == 0)
+    sphere(snakepos[0][0], 0, snakepos[0][1], .4);
+  else if (bodytype == 1)
+    cube(snakepos[0][0], 0, snakepos[0][1], .5, .5, .5, 0);
 }
 
 /*
@@ -213,7 +217,10 @@ void drawHead() {
  */
 void drawBody(int i) {
   glColor3ub(0, 200, 0);
-  sphere(snakepos[i][0], 0, snakepos[i][1], .4);
+  if (bodytype == 0)
+    sphere(snakepos[i][0], 0, snakepos[i][1], .4);
+  else if (bodytype == 1)
+    cube(snakepos[i][0], 0, snakepos[i][1], .5, .5, .5, 0);
 }
 
 /*
@@ -478,6 +485,8 @@ void key(unsigned char ch, int x, int y) {
     first_person = 1 - first_person;
   } else if (ch == 'p') {
     paused = 1 - paused;
+  } else if (ch == 'b') {
+    bodytype = 1 - bodytype;
   }
 
   Project(fov ,asp, dim);
