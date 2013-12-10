@@ -19,6 +19,7 @@ control all functions without having to use the keyboard
 Still in progress:
 ------------------
 
-* Lighting, specifically the 'flashlight' effect.
-* Menus to customize snake.
-* Texturing.
+- [ ] Better graphics for legs
+- [ ] Lighting, specifically the 'flashlight' effect.
+- [ ] Texture body
+- [ ] Fog?
