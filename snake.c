@@ -217,9 +217,14 @@ void head(double x, double y, double z,
   glRotated(th, 0, 1, 0);
   glScaled(dx, dy, dz);
 
-  sphere(0, 0, 0, .5);
-  sphere(0, 0, 0 + .3, .3);
-  sphere(0, 0, 0 - .3, .3);
+  // Main head
+  glColor3ub(0, 200, 0);
+  sphere(0.0, 0.0, 0.0, .5);
+
+  // Eyes
+  glColor3ub(10, 10, 10);
+  sphere(-0.1, 0.0, 0.3, .4);
+  sphere(-0.1, 0.0, -0.3, .4);
 
   glPopMatrix();
 }
@@ -230,7 +235,7 @@ void head(double x, double y, double z,
  */
 void drawHead() {
 
-  glColor3ub(0, 200, 0);
+  
   if (bodytype == 0) {
     switch(currentdir) {
       case Left:
@@ -244,6 +249,7 @@ void drawHead() {
     }
   }
   else if (bodytype == 1){
+    glColor3ub(0, 200, 0);
     cube(snakepos[0][0], 0, snakepos[0][1], .5, .5, .5, 0, -1);
   }
 }
