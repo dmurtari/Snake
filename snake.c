@@ -182,7 +182,6 @@ void gameBoard() {
   cube(0.0, 0.0, -Size,  Size, 1.0, 1.0, 0, 1);
 
   glPopMatrix();
-
 }
 
 /*
@@ -208,14 +207,42 @@ void initSnake() {
   foody = snakepos[currentlen - 1][1];
 }
 
+void head(double x, double y, double z, 
+          double dx, double dy, double dz,
+          double th) {
+  
+  glPushMatrix();
+  
+  // Translations
+  glTranslated(x, y, z);
+  glRotated(th, 0, 1, 0);
+  glScaled(dx, dy, dz);
+
+  sphere(0, 0, 0, .4);
+  sphere(0, 0, 0 + .3, .3);
+  sphere(0, 0, 0 - .3, .3);
+
+  glPopMatrix();
+}
+
 /*
  * Draw the head of the snake (should contain more ability for the play to 
  * customize the head, based on what settings are chosen in a menu)
  */
 void drawHead() {
   glColor3ub(0, 0, 200);
-  if (bodytype == 0)
-    sphere(snakepos[0][0], 0, snakepos[0][1], .4);
+  if (bodytype == 0) {
+    switch(currentdir) {
+      case Left:
+      case Right:
+        head(snakepos[0][0], 0, snakepos[0][1], 1, 1, 1, 0);
+        break;
+      case Up:
+      case Down:
+        head(snakepos[0][0], 0, snakepos[0][1], 1, 1, 1, 90);
+        break;
+    }
+  }
   else if (bodytype == 1)
     cube(snakepos[0][0], 0, snakepos[0][1], .5, .5, .5, 0, -1);
 }
