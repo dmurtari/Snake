@@ -53,6 +53,7 @@ int highscore = 0;
 int bodytype = 1;
 
 // Textures
+int texrequested = 0;
 unsigned int texture[10]; 
 
 /*
@@ -106,7 +107,7 @@ void cube(double x, double y, double z,
   glScaled(dx, dy, dz);
 
   // Enable textures, if desired. Otherwise, make sure textures are disabled. 
-  if (texid != -1) {
+  if (texid != -1 && texrequested == 1) {
     glEnable(GL_TEXTURE_2D);
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glBindTexture(GL_TEXTURE_2D, texture[texid]);
@@ -163,9 +164,13 @@ void gameBoard() {
   glMaterialfv(GL_FRONT_AND_BACK,GL_EMISSION,black);
 
   glPushMatrix();
-  glEnable(GL_TEXTURE_2D);
-  glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-  glBindTexture(GL_TEXTURE_2D, texture[0]);
+
+  if (texrequested == 1) {
+    glEnable(GL_TEXTURE_2D);
+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    glBindTexture(GL_TEXTURE_2D, texture[0]);
+  }
+
   glBegin(GL_QUADS);
   glNormal3f(0.0, 1.0, 0.0);
   glTexCoord2f(0.0, 0.0); glVertex3f(-100, -1.0, 100);
@@ -207,6 +212,10 @@ void initSnake() {
   foody = snakepos[currentlen - 1][1];
 }
 
+/*
+ * Draw the head segment. Controlled by the drawHead function to rotate
+ * based on current direction of the snake.
+ */
 void head(double x, double y, double z, 
           double dx, double dy, double dz,
           double th) {
@@ -234,9 +243,9 @@ void head(double x, double y, double z,
  * customize the head, based on what settings are chosen in a menu)
  */
 void drawHead() {
-
-  
   if (bodytype == 0) {
+    // Need to switch based on current direction of snake to properly draw
+    // head
     switch(currentdir) {
       case Left:
       case Right:
@@ -529,6 +538,8 @@ void key(unsigned char ch, int x, int y) {
     paused = 1 - paused;
   } else if (ch == 'b') {
     bodytype = 1 - bodytype;
+  } else if (ch == 't') {
+    texrequested = 1 - texrequested;
   }
 
   Project(fov ,asp, dim);
@@ -555,7 +566,13 @@ void menu(int value) {
     bodytype = 0;
   } else if (value == 5) {
     bodytype = 1;
+  } else if (value == 6) {
+    texrequested = 1;
+  } else if (value == 7) {
+    texrequested = 0;
   }
+
+  glutPostRedisplay();
 }
 
 /*
@@ -563,12 +580,17 @@ void menu(int value) {
  */
 void createMenus() {
   int bodymenu;
+  int texmenu;
 
   bodymenu = glutCreateMenu(menu);
   glutAddMenuEntry("Sphere", 4);
   glutAddMenuEntry("Cube", 5);
+  texmenu = glutCreateMenu(menu);
+  glutAddMenuEntry("Enable", 6);
+  glutAddMenuEntry("Disable", 7);
   glutCreateMenu(menu);
   glutAddSubMenu("Body Types", bodymenu);
+  glutAddSubMenu("Textures", texmenu);
   glutAddMenuEntry("Pause/Resume", 1);
   glutAddMenuEntry("Reset", 2);
   glutAddMenuEntry("Quit", 3);
