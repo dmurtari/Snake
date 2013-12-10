@@ -210,15 +210,14 @@ void initSnake() {
 void head(double x, double y, double z, 
           double dx, double dy, double dz,
           double th) {
-  
-  glPushMatrix();
+    glPushMatrix();
   
   // Translations
   glTranslated(x, y, z);
   glRotated(th, 0, 1, 0);
   glScaled(dx, dy, dz);
 
-  sphere(0, 0, 0, .4);
+  sphere(0, 0, 0, .5);
   sphere(0, 0, 0 + .3, .3);
   sphere(0, 0, 0 - .3, .3);
 
@@ -230,7 +229,8 @@ void head(double x, double y, double z,
  * customize the head, based on what settings are chosen in a menu)
  */
 void drawHead() {
-  glColor3ub(0, 0, 200);
+
+  glColor3ub(0, 200, 0);
   if (bodytype == 0) {
     switch(currentdir) {
       case Left:
@@ -243,15 +243,16 @@ void drawHead() {
         break;
     }
   }
-  else if (bodytype == 1)
+  else if (bodytype == 1){
     cube(snakepos[0][0], 0, snakepos[0][1], .5, .5, .5, 0, -1);
+  }
 }
 
 /*
  * Draw a body segment. Same as head, should contain more ability to customize
  */
 void drawBody(int i) {
-  glColor3ub(0, 200, 0);
+  glColor3ub(0, 0, 200);
   if (bodytype == 0)
     sphere(snakepos[i][0], 0, snakepos[i][1], .4);
   else if (bodytype == 1)
