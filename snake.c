@@ -50,7 +50,9 @@ int bodytype = 0;
 
 // Texture Globarls
 int texrequested = 1;
+int skyboxrequested = 1;
 unsigned int texture[10]; 
+unsigned int skybox[5];
 
 /*
  * Given position of vertex in polar coordinates, calculate and draw a vertex
@@ -172,6 +174,59 @@ void cylinder(double x, double y, double z,
   glPopMatrix();
 }
 
+void drawSkybox() {
+  // No Lighting
+  glDisable(GL_LIGHTING);
+
+  // Enable Textures
+  glEnable(GL_TEXTURE_2D);
+  glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_MODULATE);
+    
+  // Skybox
+  glBindTexture(GL_TEXTURE_2D,skybox[0]);
+  glBegin(GL_QUADS);
+  glTexCoord2f(0, 0); glVertex3f(-100,-100,+100);
+  glTexCoord2f(1, 0); glVertex3f(-100,-100,-100);
+  glTexCoord2f(1, 1); glVertex3f(-100,+100,-100);
+  glTexCoord2f(0, 1); glVertex3f(-100,+100,+100);
+  glEnd();
+
+  glBindTexture(GL_TEXTURE_2D,skybox[1]);
+  glBegin(GL_QUADS);
+  glTexCoord2f(1.0, 0.0); glVertex3f(+100,-100,-100);
+  glTexCoord2f(1.0, 1.0); glVertex3f(+100,+100,-100);
+  glTexCoord2f(0.0, 1.0); glVertex3f(-100,+100,-100);
+  glTexCoord2f(0.0, 0.0); glVertex3f(-100,-100,-100);
+  glEnd();
+
+  glBindTexture(GL_TEXTURE_2D,skybox[2]);
+  glBegin(GL_QUADS);
+  glTexCoord2f(0.0, 0.0); glVertex3f(+100,-100,-100);
+  glTexCoord2f(1.0, 0.0); glVertex3f(+100,-100,+100);
+  glTexCoord2f(1.0, 1.0); glVertex3f(+100,+100,+100);
+  glTexCoord2f(0.0, 1.0); glVertex3f(+100,+100,-100);
+  glEnd();
+
+  glBindTexture(GL_TEXTURE_2D,skybox[3]);
+  glBegin(GL_QUADS);
+  glTexCoord2f(0.0, 0.0); glVertex3f(+100,-100,+100);
+  glTexCoord2f(1.0, 0.0); glVertex3f(-100,-100,+100);
+  glTexCoord2f(1.0, 1.0); glVertex3f(-100,+100,+100);
+  glTexCoord2f(0.0, 1.0); glVertex3f(+100,+100,+100);
+  glEnd();
+
+  glBindTexture(GL_TEXTURE_2D,skybox[4]);
+  glBegin(GL_QUADS);
+  glTexCoord2f(0.0, 0.0); glVertex3f(+100,+100,+100);
+  glTexCoord2f(1.0, 0.0); glVertex3f(+100,+100,-100);
+  glTexCoord2f(1.0, 1.0); glVertex3f(-100,+100,-100);
+  glTexCoord2f(0.0, 1.0); glVertex3f(-100,+100,+100);
+  glEnd();
+
+  glDisable(GL_TEXTURE_2D);
+  glEnable(GL_LIGHTING);
+}
+
 /*
  * Draw the snake game board
  */
@@ -179,12 +234,14 @@ void gameBoard() {
 
   glPushMatrix();
 
+  // Texture the game board only if textures are requested
   if (texrequested == 1) {
     glEnable(GL_TEXTURE_2D);
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glBindTexture(GL_TEXTURE_2D, texture[0]);
   }
 
+  // Ground
   glBegin(GL_QUADS);
   glNormal3f(0.0, 1.0, 0.0);
   glTexCoord2f(0.0, 0.0); glVertex3f(-100, -1.0, 100);
@@ -194,11 +251,14 @@ void gameBoard() {
   glEnd();
   glDisable(GL_TEXTURE_2D);
 
+  // Walls
   glColor3ub(255, 255, 255);
   cube(Size, 0.0, 0.0,  1.0, 1.0, Size,  0, 1);
   cube(-Size, 0.0, 0.0,  1.0, 1.0, Size,  0, 1);
   cube(0.0, 0.0, Size,  Size, 1.0, 1.0, 0, 1);
   cube(0.0, 0.0, -Size,  Size, 1.0, 1.0, 0, 1);
+
+  drawSkybox();
 
   glPopMatrix();
 }
@@ -651,14 +711,21 @@ void menu(int value) {
 void createMenus() {
   int bodymenu;
   int texmenu;
+  int skyboxmenu;
 
   bodymenu = glutCreateMenu(menu);
   glutAddMenuEntry("Sphere", 4);
   glutAddMenuEntry("Cube", 5);
+  
   texmenu = glutCreateMenu(menu);
-  glutAddMenuEntry("Enable", 6);
-  glutAddMenuEntry("Disable", 7);
+  glutAddMenuEntry("Enable Textures", 6);
+  glutAddMenuEntry("Disable Textures", 7);
+
+  skyboxmeny = glutCreateMenu(menu);
+  glutAddMenuEntry("Enable Textures", 8);
+  glutAddMenuEntry("Disable Textures", 9);
   glutCreateMenu(menu);
+
   glutAddSubMenu("Body Types", bodymenu);
   glutAddSubMenu("Textures", texmenu);
   glutAddMenuEntry("Pause/Resume", 1);
@@ -673,6 +740,11 @@ void createMenus() {
 void loadTextures() {
   texture[0] = LoadTexBMP("ground.bmp");
   texture[1] = LoadTexBMP("wall.bmp");
+  skybox[0] = LoadTexBMP("sbL.bmp");
+  skybox[1] = LoadTexBMP("sbF.bmp");
+  skybox[2] = LoadTexBMP("sbR.bmp");
+  skybox[3] = LoadTexBMP("sbB.bmp");
+  skybox[4] = LoadTexBMP("sbT.bmp");
  }
 
 void reshape(int width, int height) {

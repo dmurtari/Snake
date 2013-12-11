@@ -14,12 +14,3 @@ Controls are:
 
 Clicking anywhere on the screen will bring up a menu that allows the user to 
 control all functions without having to use the keyboard
-
-
-Still in progress:
-------------------
-
-- [ ] Better graphics for legs
-- [ ] Lighting, specifically the 'flashlight' effect.
-- [ ] Texture body
-- [ ] Fog?
