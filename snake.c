@@ -258,7 +258,8 @@ void gameBoard() {
   cube(0.0, 0.0, Size,  Size, 1.0, 1.0, 0, 1);
   cube(0.0, 0.0, -Size,  Size, 1.0, 1.0, 0, 1);
 
-  drawSkybox();
+  if(skyboxrequested == 1)
+    drawSkybox();
 
   glPopMatrix();
 }
@@ -670,6 +671,8 @@ void key(unsigned char ch, int x, int y) {
     bodytype = 1 - bodytype;
   } else if (ch == 't') {
     texrequested = 1 - texrequested;
+  } else if (ch == 's') {
+    skyboxrequested = 1 - skyboxrequested;
   }
 
   Project(fov ,asp, dim);
@@ -700,6 +703,10 @@ void menu(int value) {
     texrequested = 1;
   } else if (value == 7) {
     texrequested = 0;
+  } else if (value == 8) {
+    skyboxrequested = 1;
+  } else if (value == 9) {
+    skyboxrequested = 0;
   }
 
   glutPostRedisplay();
@@ -721,13 +728,14 @@ void createMenus() {
   glutAddMenuEntry("Enable Textures", 6);
   glutAddMenuEntry("Disable Textures", 7);
 
-  skyboxmeny = glutCreateMenu(menu);
-  glutAddMenuEntry("Enable Textures", 8);
-  glutAddMenuEntry("Disable Textures", 9);
+  skyboxmenu = glutCreateMenu(menu);
+  glutAddMenuEntry("Enable Skybox", 8);
+  glutAddMenuEntry("Disable Skybox", 9);
   glutCreateMenu(menu);
 
   glutAddSubMenu("Body Types", bodymenu);
   glutAddSubMenu("Textures", texmenu);
+  glutAddSubMenu("Skybox", skyboxmenu);
   glutAddMenuEntry("Pause/Resume", 1);
   glutAddMenuEntry("Reset", 2);
   glutAddMenuEntry("Quit", 3);
