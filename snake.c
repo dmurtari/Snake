@@ -2,10 +2,6 @@
  * CSCI 4229 Final Project: Game of Snake 
  * Domenic Murtari (domenic.murtari@gmail.com)
  * Undergraduate
- *
- * Currently, functional, if basic, game of snake. All elements and function
- * calls are in place to allow for more complex graphics to be implemented by
- * the due date of the project.
  */
 
 #include "CSCIx229.h"
@@ -52,7 +48,7 @@ int score = 0;
 int highscore = 0;
 int bodytype = 1;
 
-// Textures
+// Texture Globarls
 int texrequested = 0;
 unsigned int texture[10]; 
 
@@ -154,6 +150,29 @@ void cube(double x, double y, double z,
 }
 
 /*
+ * Draw a cylinder using GLU Quadric Objects
+ * Can only rotate around z-axis, for purposes of this game
+ */
+void cylinder(double x, double y, double z, 
+              double dx, double dy, double dz,
+              double th) {
+
+  GLUquadricObj *cylinder;
+  cylinder = gluNewQuadric();
+
+  glPushMatrix();
+
+  // Translations
+  glTranslated(x, y, z);
+  glRotated(th, 0, 0, 1);
+  glScaled(dx, dy, dz);
+
+  gluCylinder(cylinder, 1, 1, 1, 20, 20);
+  
+  glPopMatrix();
+}
+
+/*
  * Draw the snake game board
  */
 void gameBoard() {
@@ -235,29 +254,6 @@ void head(double x, double y, double z,
   sphere(-0.1, 0.0, 0.3, .4);
   sphere(-0.1, 0.0, -0.3, .4);
 
-  glPopMatrix();
-}
-
-/*
- * Draw a cylinder using GLU Quadric Objects
- * Can only rotate around z-axis, for purposes of this game
- */
-void cylinder(double x, double y, double z, 
-              double dx, double dy, double dz,
-              double th) {
-
-  GLUquadricObj *cylinder;
-  cylinder = gluNewQuadric();
-
-  glPushMatrix();
-
-  // Translations
-  glTranslated(x, y, z);
-  glRotated(th, 0, 0, 1);
-  glScaled(dx, dy, dz);
-
-  gluCylinder(cylinder, 1, 1, 1, 20, 20);
-  
   glPopMatrix();
 }
 
