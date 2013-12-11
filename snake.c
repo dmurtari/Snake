@@ -238,6 +238,10 @@ void head(double x, double y, double z,
   glPopMatrix();
 }
 
+/*
+ * Draw a cylinder using GLU Quadric Objects
+ * Can only rotate around z-axis, for purposes of this game
+ */
 void cylinder(double x, double y, double z, 
               double dx, double dy, double dz,
               double th) {
@@ -257,6 +261,9 @@ void cylinder(double x, double y, double z,
   glPopMatrix();
 }
 
+/*
+ * Draw a body segment, consisting of a sphere and two cylindrical legs
+ */
 void body(double x, double y, double z,
           double dx, double dy, double dz, 
           double th) {
@@ -307,8 +314,8 @@ void drawHead() {
  */
 void drawBody(int i) {
   if (bodytype == 0) {
-    // Need to switch based on current direction of snake to properly draw
-    // head
+    // Body segment orientation will be determined by the direction that the
+    // specific body segment being drawn is going. 
     switch(snakepos[i][2]) {
       case Left:
       case Right:
@@ -359,6 +366,7 @@ void putFood() {
   if (glutGet(GLUT_ELAPSED_TIME) % 2 != 0)
     foody = -foody;
 }
+
 /*
  * Each step while the program is idling, modify the snake's position array
  * based on the direction that the snake is going, and whether the snake ate
