@@ -46,10 +46,10 @@ int paused = 0;
 int clock = 0;
 int score = 0;
 int highscore = 0;
-int bodytype = 1;
+int bodytype = 0;
 
 // Texture Globarls
-int texrequested = 0;
+int texrequested = 1;
 unsigned int texture[10]; 
 
 /*
@@ -115,26 +115,26 @@ void cube(double x, double y, double z,
   //Front
   glNormal3f(0, 0, 1);
   glTexCoord2f(0.0, 0.0); glVertex3f(-1, -1, +1);
-  glTexCoord2f(5.0, 0.0); glVertex3f(+1, -1, +1);
-  glTexCoord2f(5.0, 5.0); glVertex3f(+1, +1, +1);
+  glTexCoord2f(50.0, 0.0); glVertex3f(+1, -1, +1);
+  glTexCoord2f(50.0, 5.0); glVertex3f(+1, +1, +1);
   glTexCoord2f(0.0, 5.0); glVertex3f(-1, +1, +1);
   //  Back
   glNormal3f(0, 0,-1);
   glTexCoord2f(0.0, 0.0); glVertex3f(+1, -1, -1);
-  glTexCoord2f(5.0, 0.0); glVertex3f(-1, -1, -1);
-  glTexCoord2f(5.0, 5.0); glVertex3f(-1, +1, -1);
+  glTexCoord2f(50.0, 0.0); glVertex3f(-1, -1, -1);
+  glTexCoord2f(50.0, 5.0); glVertex3f(-1, +1, -1);
   glTexCoord2f(0.0, 5.0); glVertex3f(+1, +1, -1);
   //  Right
   glNormal3f(+1, 0, 0);
   glTexCoord2f(0.0, 0.0); glVertex3f(+1, -1, +1);
-  glTexCoord2f(5.0, 0.0); glVertex3f(+1, -1, -1);
-  glTexCoord2f(5.0, 5.0); glVertex3f(+1, +1, -1);
+  glTexCoord2f(50.0, 0.0); glVertex3f(+1, -1, -1);
+  glTexCoord2f(50.0, 5.0); glVertex3f(+1, +1, -1);
   glTexCoord2f(0.0, 5.0); glVertex3f(+1, +1, +1);
   //  Left
   glNormal3f(-1, 0, 0);
   glTexCoord2f(0.0, 0.0); glVertex3f(-1, -1, -1);
-  glTexCoord2f(5.0, 0.0); glVertex3f(-1, -1, +1);
-  glTexCoord2f(5.0, 5.0); glVertex3f(-1, +1, +1);
+  glTexCoord2f(50.0, 0.0); glVertex3f(-1, -1, +1);
+  glTexCoord2f(50.0, 5.0); glVertex3f(-1, +1, +1);
   glTexCoord2f(0.0, 5.0); glVertex3f(-1, +1, -1);
   //  Top
   glNormal3f( 0,+1, 0);
@@ -176,11 +176,6 @@ void cylinder(double x, double y, double z,
  * Draw the snake game board
  */
 void gameBoard() {
-  float white[] = {1,1,1,1};
-  float black[] = {0,0,0,1};
-  glMaterialfv(GL_FRONT_AND_BACK,GL_SHININESS,shinyvec);
-  glMaterialfv(GL_FRONT_AND_BACK,GL_SPECULAR,white);
-  glMaterialfv(GL_FRONT_AND_BACK,GL_EMISSION,black);
 
   glPushMatrix();
 
@@ -193,9 +188,9 @@ void gameBoard() {
   glBegin(GL_QUADS);
   glNormal3f(0.0, 1.0, 0.0);
   glTexCoord2f(0.0, 0.0); glVertex3f(-100, -1.0, 100);
-  glTexCoord2f(20.0, 0.0); glVertex3f(-100, -1.0, -100);
-  glTexCoord2f(20.0, 20.0); glVertex3f(100, -1.0, -100);
-  glTexCoord2f(0.0, 20.0); glVertex3f(100, -1.0, 100);
+  glTexCoord2f(50.0, 0.0); glVertex3f(-100, -1.0, -100);
+  glTexCoord2f(50.0, 50.0); glVertex3f(100, -1.0, -100);
+  glTexCoord2f(0.0, 50.0); glVertex3f(100, -1.0, 100);
   glEnd();
   glDisable(GL_TEXTURE_2D);
 
