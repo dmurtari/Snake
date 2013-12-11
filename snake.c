@@ -139,8 +139,8 @@ void cube(double x, double y, double z,
   //  Top
   glNormal3f( 0,+1, 0);
   glTexCoord2f(0.0, 0.0); glVertex3f(-1, +1, +1);
-  glTexCoord2f(5.0, 0.0); glVertex3f(+1, +1, +1);
-  glTexCoord2f(5.0, 5.0); glVertex3f(+1, +1, -1);
+  glTexCoord2f(50.0, 0.0); glVertex3f(+1, +1, +1);
+  glTexCoord2f(50.0, 5.0); glVertex3f(+1, +1, -1);
   glTexCoord2f(0.0, 5.0); glVertex3f(-1, +1, -1);
   glEnd();
 
