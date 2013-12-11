@@ -280,7 +280,7 @@ void body(double x, double y, double z,
 
   glColor3ub(139, 69, 69);
   cylinder(0.0, 0.0, 0.3, 0.1, 0.1, 0.5, 90);
-  cylinder(0.0, 0.0, -0.6, 0.1, 0.1, 0.5, 90);
+  cylinder(0.0, 0.0, -0.7, 0.1, 0.1, 0.5, 90);
 
   glPopMatrix();
 }
