@@ -219,7 +219,7 @@ void initSnake() {
 void head(double x, double y, double z, 
           double dx, double dy, double dz,
           double th) {
-    glPushMatrix();
+  glPushMatrix();
   
   // Translations
   glTranslated(x, y, z);
@@ -235,6 +235,26 @@ void head(double x, double y, double z,
   sphere(-0.1, 0.0, 0.3, .4);
   sphere(-0.1, 0.0, -0.3, .4);
 
+  glPopMatrix();
+}
+
+void cylinder(double x, double y, double z, 
+              double dx, double dy, double dz,
+              double rx, double ry, double rz,
+              double th) {
+
+  GLUquadricObj *cylinder;
+  cylinder = gluNewQuadric();
+
+  glPushMatrix();
+
+  // Translations
+  glTranslated(x, y, z);
+  glRotated(th, rx, ry, rz);
+  glScaled(dx, dy, dz);
+
+  gluCylinder(cylinder, 1, 1, 1, 20, 20);
+  
   glPopMatrix();
 }
 
