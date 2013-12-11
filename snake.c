@@ -652,27 +652,33 @@ void special(int key, int x, int y) {
 }
 
 void key(unsigned char ch, int x, int y) {
-  if (ch == 27)
-    exit(0);
-  else if (ch == '0') {
-    th = 0;
-    ph = 90;
-  } else if (ch == 'r') {
-    initSnake();
-    crashed = 0;
-    score = 0;
-    currentdir = Left;
-    glutIdleFunc(idle);
-  } else if (ch == 'f') {
-    first_person = 1 - first_person;
-  } else if (ch == 'p') {
-    paused = 1 - paused;
-  } else if (ch == 'b') {
-    bodytype = 1 - bodytype;
-  } else if (ch == 't') {
-    texrequested = 1 - texrequested;
-  } else if (ch == 's') {
-    skyboxrequested = 1 - skyboxrequested;
+
+  switch (ch) {
+    case 27:
+      exit(0);
+      break;
+    case 'r':
+      initSnake();
+      crashed = 0;
+      score = 0;
+      currentdir = Left;
+      glutIdleFunc(idle);
+      break;
+    case 'f':
+      first_person = 1 - first_person;
+      break;
+    case 'p':
+      paused = 1 - paused;
+      break;
+    case 'b':
+      bodytype = 1 - bodytype;
+      break;
+    case 't':
+      texrequested = 1 - texrequested;
+      break;
+    case 's':
+      skyboxrequested = 1 - skyboxrequested;
+      break;
   }
 
   Project(fov ,asp, dim);
@@ -685,29 +691,40 @@ void key(unsigned char ch, int x, int y) {
  * to memorize keys)
  */
 void menu(int value) {
-  if(value == 1) {
-    paused = 1 - paused;
-  } else if (value == 2) {
-    initSnake();
-    crashed = 0;
-    score = 0;
-    currentdir = Left;
-    glutIdleFunc(idle);  
-  } else if (value == 3) {
-    exit(0);
-  } else if (value == 4) {
-    bodytype = 0;
-  } else if (value == 5) {
-    bodytype = 1;
-  } else if (value == 6) {
-    texrequested = 1;
-  } else if (value == 7) {
-    texrequested = 0;
-  } else if (value == 8) {
-    skyboxrequested = 1;
-  } else if (value == 9) {
-    skyboxrequested = 0;
-  }
+
+  switch (value) {
+    case 1:
+      paused = 1 - paused;
+      break;
+    case 2:
+      initSnake();
+      crashed = 0;
+      score = 0;
+      currentdir = Left;
+      glutIdleFunc(idle);
+      break;
+    case 3:
+      exit(0);
+      break;
+    case 4:
+      bodytype = 0;
+      break;
+    case 5:
+      bodytype = 1;
+      break;
+    case 6:
+      texrequested = 1;
+      break;
+    case 7:
+      texrequested = 0;
+      break;
+    case 8:
+      skyboxrequested = 1;
+      break;
+    case 9:
+      skyboxrequested = 0;
+      break;
+  }  
 
   glutPostRedisplay();
 }
