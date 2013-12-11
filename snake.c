@@ -202,10 +202,10 @@ void initSnake() {
     snakepos[i][1] = NA;
   }
 
-  snakepos[0][0] = 0; snakepos[0][1] = 0;
-  snakepos[1][0] = 1; snakepos[1][1] = 0;
-  snakepos[2][0] = 2; snakepos[2][1] = 0;
-
+  snakepos[0][0] = 0; snakepos[0][1] = 0; snakepos[0][1] = Left;
+  snakepos[1][0] = 1; snakepos[1][1] = 0; snakepos[0][1] = Left;
+  snakepos[2][0] = 2; snakepos[2][1] = 0; snakepos[0][1] = Left;
+ 
   currentlen = 3;
 
   foodx = snakepos[currentlen - 1][0];
@@ -309,7 +309,7 @@ void drawBody(int i) {
   if (bodytype == 0) {
     // Need to switch based on current direction of snake to properly draw
     // head
-    switch(currentdir) {
+    switch(snakepos[i][2]) {
       case Left:
       case Right:
         body(snakepos[i][0], 0, snakepos[i][1], 1, 1, 1, 0);
@@ -372,6 +372,7 @@ void step(int dir) {
     for(i = currentlen; i > 0; i--) {
       snakepos[i][0] = snakepos[i - 1][0];
       snakepos[i][1] = snakepos[i - 1][1];
+      snakepos[i][2] = snakepos[i - 1][2];
     }       
     currentlen++;
 
@@ -385,6 +386,7 @@ void step(int dir) {
     for(i = currentlen - 1; i > 0; i--) {
       snakepos[i][0] = snakepos[i - 1][0];
       snakepos[i][1] = snakepos[i - 1][1];
+      snakepos[i][2] = snakepos[i - 1][2];
     }
     score += 10;
   }
@@ -394,15 +396,19 @@ void step(int dir) {
   switch(dir) {
     case Up:
       snakepos[0][1] -= 1;
+      snakepos[0][2] = Up;
       break;
     case Right:
       snakepos[0][0] += 1;
+      snakepos[0][2] = Right;
       break;
     case Down:
       snakepos[0][1] += 1;
+      snakepos[0][2] = Down;
       break;
     case Left:
       snakepos[0][0] -= 1;
+      snakepos[0][2] = Left;
       break;
   }
 
