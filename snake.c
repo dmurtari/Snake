@@ -532,10 +532,12 @@ void isCrashed() {
  * message on crash. 
  */
 void printMessage() {
+  glColor3ub(0, 0, 0);
   glWindowPos2i(5, 5);
   Print("Score: %d, High Score: %d", score, highscore);
 
   if (crashed) {
+    glColor3ub(255, 0, 0);
     glWindowPos2i(200, 400);
     Print("CRASHED! Hit 'r' to restart");
     glWindowPos2i(220, 300);
@@ -543,6 +545,7 @@ void printMessage() {
   }
 
   if (paused) {
+    glColor3ub(0, 255, 255);
     glWindowPos2i(210, 500);
     Print("Paused. Hit 'p' to resume");
   }
