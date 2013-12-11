@@ -304,7 +304,7 @@ void drawHead() {
         break;
     }
   } else if (bodytype == 1){
-    glColor3ub(0, 200, 0);
+    glColor3ub(0, 0, 200);
     cube(snakepos[0][0], 0, snakepos[0][1], .5, .5, .5, 0, -1);
   }
 }
@@ -338,7 +338,21 @@ void drawBody(int i) {
  */
 void drawFood() {
   glColor3ub(200, 0, 0);
-  sphere(foodx, 0, foody, .3);
+  sphere(foodx, 0, foody, .5);
+
+  glPushMatrix();
+  glTranslated(foodx, 0, foody);
+  glColor3ub(0, 200, 0);
+
+  glBegin(GL_QUADS);
+  glNormal3f(0, 1, 0);
+  glVertex3f(0, 1, 0);
+  glVertex3f(.2, 1, .3);
+  glVertex3f(0, 1, .6);
+  glVertex3f(-.2, 1, .3);
+  glEnd();
+
+  glPopMatrix();
 }
 
 /*
