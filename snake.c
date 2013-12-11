@@ -39,7 +39,7 @@ int zh        =  90;
 float ylight  =   0;
 
 // Game Globals
-int snakepos[Size * Size][2];
+int snakepos[Size * Size][3];
 int speed = 100;
 int currentdir = Left;
 int currentlen = 0;
@@ -240,7 +240,6 @@ void head(double x, double y, double z,
 
 void cylinder(double x, double y, double z, 
               double dx, double dy, double dz,
-              double rx, double ry, double rz,
               double th) {
 
   GLUquadricObj *cylinder;
@@ -250,11 +249,32 @@ void cylinder(double x, double y, double z,
 
   // Translations
   glTranslated(x, y, z);
-  glRotated(th, rx, ry, rz);
+  glRotated(th, 0, 0, 1);
   glScaled(dx, dy, dz);
 
   gluCylinder(cylinder, 1, 1, 1, 20, 20);
   
+  glPopMatrix();
+}
+
+void body(double x, double y, double z,
+          double dx, double dy, double dz, 
+          double th) {
+  
+  glPushMatrix();
+
+  // Translations
+  glTranslated(x, y, z);
+  glRotated(th, 0, 1, 0);
+  glScaled(dx, dy, dz);
+
+  glColor3ub(0, 0, 200);
+  sphere(0.0, 0.0, 0.0, 0.4);
+
+  glColor3ub(139, 69, 69);
+  cylinder(0.0, 0.0, 0.3, 0.1, 0.1, 0.5, 90);
+  cylinder(0.0, 0.0, -0.6, 0.1, 0.1, 0.5, 90);
+
   glPopMatrix();
 }
 
@@ -276,8 +296,7 @@ void drawHead() {
         head(snakepos[0][0], 0, snakepos[0][1], 1, 1, 1, 90);
         break;
     }
-  }
-  else if (bodytype == 1){
+  } else if (bodytype == 1){
     glColor3ub(0, 200, 0);
     cube(snakepos[0][0], 0, snakepos[0][1], .5, .5, .5, 0, -1);
   }
@@ -287,11 +306,23 @@ void drawHead() {
  * Draw a body segment. Same as head, should contain more ability to customize
  */
 void drawBody(int i) {
-  glColor3ub(0, 0, 200);
-  if (bodytype == 0)
-    sphere(snakepos[i][0], 0, snakepos[i][1], .4);
-  else if (bodytype == 1)
+  if (bodytype == 0) {
+    // Need to switch based on current direction of snake to properly draw
+    // head
+    switch(currentdir) {
+      case Left:
+      case Right:
+        body(snakepos[i][0], 0, snakepos[i][1], 1, 1, 1, 0);
+        break;
+      case Up:
+      case Down:
+        body(snakepos[i][0], 0, snakepos[i][1], 1, 1, 1, 90);
+        break;
+    }
+  } else if (bodytype == 1){
+    glColor3ub(0, 200, 0);
     cube(snakepos[i][0], 0, snakepos[i][1], .5, .5, .5, 0, -1);
+  }
 }
 
 /*
