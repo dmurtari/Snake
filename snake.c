@@ -534,7 +534,7 @@ void isCrashed() {
 void printMessage() {
   glColor3ub(0, 0, 0);
   glWindowPos2i(5, 5);
-  Print("Score: %d, High Score: %d", score, highscore);
+  Print("Score: %d, High Score: %d, Current Direction: %d", score, highscore, currentdir);
 
   if (crashed) {
     glColor3ub(255, 0, 0);
@@ -636,6 +636,8 @@ void special(int key, int x, int y) {
   } else if (key == GLUT_KEY_LEFT) {
     if (first_person) {
       currentdir = (currentdir - 1) % 4;
+      if (currentdir < 0)
+        currentdir += 4;
     } else if (currentdir != Right) {
       currentdir = Left;
     }
